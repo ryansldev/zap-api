@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { Replace } from '../helpers/Replace'
 import bcrypt from 'bcrypt'
+import { Post } from './post';
 
 interface UserProps {
   id: string;

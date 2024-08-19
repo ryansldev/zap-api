@@ -26,8 +26,8 @@ model User {
   posted Post[] @relation("posts")
   liked  Post[] @relation("likes")
 
-  created_at DateTime  @default(now())
-  updated_at DateTime? @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Post {
@@ -35,8 +35,11 @@ model Post {
   text     String
   parentId String
 
-  likedBy User[] @relation("likes")
+  liked_by User[] @relation("likes")
 
-  author   User   @relation(fields: [authorId], references: [id], name: "posts")
-  authorId String
+  author    User   @relation(fields: [author_id], references: [id], name: "posts")
+  author_id String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
