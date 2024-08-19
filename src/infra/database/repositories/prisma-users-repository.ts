@@ -24,6 +24,18 @@ export class PrismaUsersRepository implements UsersRepository {
     return PrismaUserMapper.toDomain(user)
   }
 
+  async findById(id: string): Promise<User | undefined> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id,
+      }
+    })
+
+    if(!user) return;
+
+    return PrismaUserMapper.toDomain(user)
+  }
+
   async save(user: User): Promise<void> {
     await this.prisma.user.update({
       where: {
