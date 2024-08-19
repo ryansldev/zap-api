@@ -18,12 +18,9 @@ describe('Post', () => {
     const post = new Post({
       text: 'New post',
       authorId: user.id,
-      author: user,
     })
 
     expect(post).toBeInstanceOf(Post)
-    expect(post.author).toBe(user)
-    expect(post.author.id).toBe(user.id)
   })
 
   it('should be able to like a post', async () => {
@@ -41,7 +38,6 @@ describe('Post', () => {
     const post = new Post({
       text: 'New post',
       authorId: user.id,
-      author: user,
     })
 
     post.like(user)
