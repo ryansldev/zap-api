@@ -7,6 +7,7 @@ describe('User', () => {
       name: 'John',
       lastname: 'Doe',
       email: 'johndoe@gmail.com',
+      username: 'johndoe',
       password: 'johndoe123',
       location: 'BR',
     })

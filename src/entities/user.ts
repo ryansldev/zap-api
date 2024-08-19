@@ -1,12 +1,12 @@
 import { randomUUID } from 'crypto';
-import { Replace } from '../../helpers/Replace'
+import { Replace } from '../helpers/Replace'
 import bcrypt from 'bcrypt'
-import { Post } from './post';
 
 interface UserProps {
   id: string;
   name: string;
   lastname: string;
+  username: string;
   email: string;
   password: string;
   profilePic?: string;
@@ -61,6 +61,14 @@ export class User {
 
   set email(email: string) {
     this.props.email = email
+  }
+
+  get username(): string {
+    return this.props.username
+  }
+
+  set username(username: string) {
+    this.props.username = username
   }
 
   get password(): string {
