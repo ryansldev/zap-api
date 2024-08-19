@@ -6,6 +6,7 @@ import { Post } from "@entities/post";
 interface CreatePostRequest {
   text: string;
   authorId: string;
+  parentId?: string;
 }
 
 export class CreatePost {
@@ -17,6 +18,7 @@ export class CreatePost {
   async execute({
     text,
     authorId,
+    parentId,
   }: CreatePostRequest) {
     const author = await this.usersRepository.findById(authorId)
     if(!author) throw new AuthorNotFound();
@@ -24,6 +26,7 @@ export class CreatePost {
     const post = new Post({
       text,
       authorId,
+      parentId,
     })
 
     await this.postsRepository.create(post)
