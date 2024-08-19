@@ -9,7 +9,6 @@ interface PostProps {
 
   likedBy: User[]
   authorId: User['id']
-  author: User
 
   createdAt: Date;
   updatedAt: Date;
@@ -67,10 +66,6 @@ export class Post {
 
   get authorId(): string {
     return this.props.authorId
-  }
-
-  get author(): User {
-    return this.props.author
   }
 
   get createdAt(): Date {
