@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "vitest",
     "dev": "tsx watch src/server.ts"
   },
   "keywords": [],
@@ -11,12 +12,15 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.18.0",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "fastify": "^4.28.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^22.4.1",
     "prisma": "^5.18.0",
-    "tsx": "^4.17.0"
+    "tsx": "^4.17.0",
+    "vitest": "^2.0.5"
   }
 }
