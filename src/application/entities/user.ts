@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { Replace } from '../helpers/Replace'
+import { Replace } from '@helpers/Replace'
 import bcrypt from 'bcrypt'
 
 interface UserProps {
@@ -10,7 +10,7 @@ interface UserProps {
   email: string;
   password: string;
   profilePic?: string;
-  location: "BR";
+  location: string;
 
   createdAt: Date;
   updatedAt: Date;
@@ -88,11 +88,11 @@ export class User {
     this.props.profilePic = profilePic
   }
 
-  get location(): "BR" {
+  get location(): string {
     return this.props.location
   }
 
-  set location(location: "BR") {
+  set location(location: string) {
     this.props.location = location
   }
 

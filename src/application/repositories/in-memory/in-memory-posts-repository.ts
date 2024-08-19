@@ -1,8 +1,8 @@
-import { Post } from '../../entities/post'
-import { PostsRepository } from '../posts-repository'
+import { Post } from '@entities/post'
+import { PostsRepository } from '@repositories/posts-repository'
 
 export class InMemoryPostsRepository implements PostsRepository {
-  public items: Post[]
+  public items: Post[] = []
 
   async create(post: Post): Promise<void> {
     this.items.push(post)
