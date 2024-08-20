@@ -7,6 +7,16 @@ interface PostHTTP {
   parentId?: string;
   authorId: string;
   author: UserHTTP;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface FullPostHTTP {
+  id: string;
+  text: string;
+  parentId?: string;
+  authorId: string;
+  author: UserHTTP;
   likedBy: UserHTTP[];
   createdAt: Date;
   updatedAt: Date;
@@ -14,6 +24,18 @@ interface PostHTTP {
 
 export class PostViewModel {
   static toHTTP(post: Post): PostHTTP {
+    return {
+      id: post.id,
+      text: post.text,
+      parentId: post.parentId,
+      authorId: post.authorId,
+      author: UserViewModel.toHTTP(post.author),
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+    }
+  }
+
+  static toFullHTTP(post: Post): FullPostHTTP {
     return {
       id: post.id,
       text: post.text,
