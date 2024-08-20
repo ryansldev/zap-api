@@ -14,6 +14,7 @@ const usersController = new UsersController(usersRepository)
 
 async function routes (app: FastifyInstance) {
   app.post('/users', (request, reply) => usersController.create(request, reply))
+  app.get('/users/:username', (request, reply) => usersController.findByUsername(request, reply))
 }
 
 export default routes

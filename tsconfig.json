@@ -39,6 +39,7 @@
       "@prisma-mappers/*": ["./src/infra/database/mappers/*"],
       "@helpers/*": ["./src/helpers/*"],
       "@@types/*": ["./src/types/*"],
+      "@view-models/*": ["./src/infra/http/view-models/*"],
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
