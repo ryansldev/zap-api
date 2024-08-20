@@ -1,6 +1,6 @@
 import { User } from "@entities/user";
 
-interface UserHTTP {
+export interface UserHTTP {
   id: string;
   name: string;
   lastname: string;

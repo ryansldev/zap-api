@@ -4,7 +4,7 @@ import { Post } from './post'
 
 describe('Post', () => {
   it('should be able to create post', async () => {
-    const user = new User({
+    const author = new User({
       name: 'John',
       lastname: 'Doe',
       email: 'johndoe@gmail.com',
@@ -13,18 +13,19 @@ describe('Post', () => {
       location: 'BR',
     })
 
-    await user.hashPassword()
+    await author.hashPassword()
 
     const post = new Post({
       text: 'New post',
-      authorId: user.id,
+      authorId: author.id,
+      author,
     })
 
     expect(post).toBeInstanceOf(Post)
   })
 
   it('should be able to like a post', async () => {
-    const user = new User({
+    const author = new User({
       name: 'John',
       lastname: 'Doe',
       email: 'johndoe@gmail.com',
@@ -33,15 +34,16 @@ describe('Post', () => {
       location: 'BR',
     })
 
-    await user.hashPassword()
+    await author.hashPassword()
 
     const post = new Post({
       text: 'New post',
-      authorId: user.id,
+      authorId: author.id,
+      author,
     })
 
-    post.like(user)
+    post.like(author)
 
-    expect(post.likedBy).toEqual([user])
+    expect(post.likedBy).toEqual([author])
   })
 })

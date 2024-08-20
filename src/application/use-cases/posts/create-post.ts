@@ -26,6 +26,7 @@ export class CreatePost {
     const post = new Post({
       text,
       authorId,
+      author,
       parentId,
     })
 

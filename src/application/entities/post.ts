@@ -8,6 +8,8 @@ interface PostProps {
   parentId?: string;
 
   likedBy: User[]
+
+  author: User
   authorId: User['id']
 
   createdAt: Date;
@@ -66,6 +68,10 @@ export class Post {
 
   get authorId(): string {
     return this.props.authorId
+  }
+
+  get author(): User {
+    return this.props.author
   }
 
   get createdAt(): Date {
