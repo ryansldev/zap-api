@@ -31,16 +31,13 @@ export class PrismaPostsRepository implements PostsRepository {
   }
 
   async like(post: Post, user: User): Promise<void> {
-    await this.prisma.post.update({
+    await this.prisma.user.update({
       where: {
-        id: post.id,
+        id: user.id,
       },
       data: {
-        liked_by: {
-          update: post.likedBy.map((user) => ({
-            data: PrismaUserMapper.toPrisma(user),
-            where: { id: user.id },
-          }))
+        liked: {
+          set: PrismaPostMapper.toPrisma(post)
         }
       }
     })
