@@ -70,6 +70,11 @@ export class UsersController {
     return { token }
   }
 
+  async logout(_request: FastifyRequest, reply: FastifyReply) {
+    reply.clearCookie('access_token')
+    return reply.send({ message: 'Logout successfull' })
+  }
+
   async findByUsername(request: FastifyRequest, _reply: FastifyReply) {
     const findUserByUsernameParamsSchema = z.object({
       username: z.string()
