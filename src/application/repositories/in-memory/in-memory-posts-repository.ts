@@ -13,6 +13,12 @@ export class InMemoryPostsRepository implements PostsRepository {
     return this.items.find((post) => post.id === id)
   }
 
+  async list(): Promise<Post[]> {
+    return this.items.sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    });
+  }
+
   async like(post: Post, user: User): Promise<void> {
     const index = this.items.indexOf(post)
     if (index !== -1) {
