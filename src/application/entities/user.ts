@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { Replace } from '@helpers/Replace'
 import bcrypt from 'bcrypt'
+import { Post } from './post';
 
 interface UserProps {
   id: string;
@@ -12,12 +13,17 @@ interface UserProps {
   profilePic?: string;
   location: string;
 
+  liked: Post[];
+  posted: Post[];
+
   createdAt: Date;
   updatedAt: Date;
 }
 
 type EntryUserProps = Replace<UserProps, {
   id?: string;
+  liked?: Post[];
+  posted?: Post[];
   createdAt?: Date;
   updatedAt?: Date;
 }>;
@@ -30,6 +36,8 @@ export class User {
     this.props = {
       id: props.id ?? randomUUID(),
       ...props,
+      liked: props.liked ?? [],
+      posted: props.posted ?? [],
       createdAt: props.createdAt ?? now,
       updatedAt: props.updatedAt ?? now,
     }
@@ -98,6 +106,14 @@ export class User {
 
   set location(location: string) {
     this.props.location = location
+  }
+
+  get liked(): Post[] {
+    return this.props.liked
+  }
+
+  addLikedPost(post: Post) {
+    this.props.liked.push(post)
   }
 
   get createdAt(): Date {

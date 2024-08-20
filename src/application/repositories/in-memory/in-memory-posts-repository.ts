@@ -1,4 +1,5 @@
 import { Post } from '@entities/post'
+import { User } from '@entities/user'
 import { PostsRepository } from '@repositories/posts-repository'
 
 export class InMemoryPostsRepository implements PostsRepository {
@@ -10,6 +11,14 @@ export class InMemoryPostsRepository implements PostsRepository {
 
   async findById(id: string): Promise<Post | undefined> {
     return this.items.find((post) => post.id === id)
+  }
+
+  async like(post: Post, user: User): Promise<void> {
+    const index = this.items.indexOf(post)
+    if (index !== -1) {
+      this.items[index].like(user)
+      user.addLikedPost(post)
+    }
   }
 
   async save(post: Post): Promise<void> {

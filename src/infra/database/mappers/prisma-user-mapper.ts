@@ -1,5 +1,12 @@
 import { User } from "@entities/user";
-import { User as RawUser } from "@prisma/client"
+import { Prisma, User as RawUser } from "@prisma/client"
+
+type CompleteRawUser = Prisma.UserGetPayload<{
+  include: {
+    posted: true,
+    liked: true,
+  }
+}>
 
 export class PrismaUserMapper {
   static toPrisma(user: User): RawUser {
