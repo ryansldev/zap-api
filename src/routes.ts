@@ -36,6 +36,9 @@ async function routes (app: FastifyInstance) {
   app.get('/posts', {
     preHandler: [app.authenticate],
   }, (request, reply) => postsController.list(request, reply))
+  app.get('/posts/:id/comments', {
+    preHandler: [app.authenticate]
+  }, (request, reply) => postsController.listParents(request, reply))
 }
 
 export default routes

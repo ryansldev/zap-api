@@ -6,11 +6,13 @@ import { LikePost } from "@use-cases/posts/like-post";
 import { ListPosts } from "@use-cases/posts/list-posts";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { PostViewModel } from "@view-models/post-view-model";
+import { ListPostParents } from "@use-cases/posts/list-post-parents";
 
 export class PostsController {
   private createPost: CreatePost
   private likePost: LikePost
   private listPosts: ListPosts
+  private listPostParents: ListPostParents
 
   constructor(
     private usersRepository: UsersRepository,
@@ -19,6 +21,7 @@ export class PostsController {
     this.createPost = new CreatePost(this.usersRepository, this.postsRepository)
     this.likePost = new LikePost(this.usersRepository, this.postsRepository)
     this.listPosts = new ListPosts(this.postsRepository)
+    this.listPostParents = new ListPostParents(this.postsRepository)
   }
 
   async create(request: FastifyRequest, _reply: FastifyReply) {
@@ -40,6 +43,18 @@ export class PostsController {
 
   async list(_request: FastifyRequest, _reply: FastifyReply) {
     const posts = await this.listPosts.execute()
+    return posts.map(PostViewModel.toHTTP)
+  }
+
+  async listParents(request: FastifyRequest, _reply: FastifyReply) {
+    const listParentsParamsSchema = z.object({
+      id: z.string().uuid(),
+    })
+
+    const { id } = listParentsParamsSchema.parse(request.params)
+
+    const posts = await this.listPostParents.execute({ id })
+
     return posts.map(PostViewModel.toHTTP)
   }
 
