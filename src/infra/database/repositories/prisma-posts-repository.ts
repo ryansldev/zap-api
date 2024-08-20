@@ -30,6 +30,20 @@ export class PrismaPostsRepository implements PostsRepository {
     return PrismaPostMapper.toDomain(post)
   }
 
+  async list(): Promise<Post[]> {
+    const posts = await this.prisma.post.findMany({
+      orderBy: {
+        created_at: 'desc'
+      },
+      include: {
+        author: true,
+        liked_by: true,
+      }
+    })
+
+    return posts.map(PrismaPostMapper.toDomain)
+  }
+
   async like(post: Post, user: User): Promise<void> {
     await this.prisma.user.update({
       where: {
