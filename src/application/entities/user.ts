@@ -75,6 +75,10 @@ export class User {
     return this.props.password
   }
 
+  async authenticate(password: string): Promise<boolean> {
+    return await bcrypt.compare(password, this.password)
+  }
+
   async hashPassword() {
     const hash = await bcrypt.hash(this.props.password, 10)
     this.props.password = hash
