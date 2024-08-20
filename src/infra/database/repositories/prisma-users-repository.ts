@@ -28,7 +28,7 @@ export class PrismaUsersRepository implements UsersRepository {
     const user = await this.prisma.user.findFirst({
       where: {
         id,
-      }
+      },
     })
 
     if(!user) return;

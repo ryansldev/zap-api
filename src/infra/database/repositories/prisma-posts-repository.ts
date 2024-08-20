@@ -7,7 +7,7 @@ export class PrismaPostsRepository implements PostsRepository {
   constructor(private prisma: PrismaService) {}
 
   async create(post: Post): Promise<void> {
-    this.prisma.post.create({
+    await this.prisma.post.create({
       data: PrismaPostMapper.toPrisma(post)
     })
   }
@@ -16,6 +16,10 @@ export class PrismaPostsRepository implements PostsRepository {
     const post = await this.prisma.post.findFirst({
       where: {
         id,
+      },
+      include: {
+        author: true,
+        liked_by: true,
       }
     })
 

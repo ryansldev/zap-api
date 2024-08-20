@@ -8,17 +8,28 @@ import { PrismaUsersRepository } from "@prisma-repositories/prisma-users-reposit
 // import { PrismaPostsRepository } from "@prisma-repositories/prisma-posts-repository";
 
 import { UsersController } from "@controllers/users.controller"
+import { PrismaPostsRepository } from "@prisma-repositories/prisma-posts-repository";
+import { PostsController } from "@controllers/posts.controller";
 
 const usersRepository = new PrismaUsersRepository(prisma)
 const usersController = new UsersController(usersRepository)
 
+const postsRepository = new PrismaPostsRepository(prisma)
+const postsController = new PostsController(usersRepository, postsRepository)
+
 async function routes (app: FastifyInstance) {
+  // USER
   app.post('/signup', (request, reply) => usersController.create(request, reply))
   app.post('/login', (request, reply) => usersController.auth(request, reply))
   app.delete('/logout', (request, reply) => usersController.logout(request, reply))
   app.get('/users/:username', {
     preHandler: [app.authenticate]
   }, (request, reply) => usersController.findByUsername(request, reply))
+
+  // POST
+  app.post('/posts', {
+    preHandler: [app.authenticate]
+  }, (request, reply) => postsController.create(request, reply))
 }
 
 export default routes
