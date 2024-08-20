@@ -7,12 +7,14 @@ import { ListPosts } from "@use-cases/posts/list-posts";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { PostViewModel } from "@view-models/post-view-model";
 import { ListPostParents } from "@use-cases/posts/list-post-parents";
+import { FindPostById } from "@use-cases/posts/find-post-by-id";
 
 export class PostsController {
   private createPost: CreatePost
   private likePost: LikePost
   private listPosts: ListPosts
   private listPostParents: ListPostParents
+  private findPostById: FindPostById
 
   constructor(
     private usersRepository: UsersRepository,
@@ -22,6 +24,7 @@ export class PostsController {
     this.likePost = new LikePost(this.usersRepository, this.postsRepository)
     this.listPosts = new ListPosts(this.postsRepository)
     this.listPostParents = new ListPostParents(this.postsRepository)
+    this.findPostById = new FindPostById(this.postsRepository)
   }
 
   async create(request: FastifyRequest, _reply: FastifyReply) {
@@ -39,6 +42,18 @@ export class PostsController {
       authorId,
       parentId,
     })
+  }
+
+  async findById(request: FastifyRequest, _reply: FastifyReply) {
+    const findPostByIdParamsSchema = z.object({
+      id: z.string().uuid(),
+    })
+
+    const { id } = findPostByIdParamsSchema.parse(request.params)
+
+    const post = await this.findPostById.execute({ id })
+
+    return PostViewModel.toFullHTTP(post)
   }
 
   async list(_request: FastifyRequest, _reply: FastifyReply) {
