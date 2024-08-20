@@ -1,17 +1,20 @@
+import { z } from "zod";
 import { UsersRepository } from "@repositories/users-repository";
+import { AuthUser } from "@use-cases/users/auth-user";
 import { CreateUser } from "@use-cases/users/create-user";
 import { FindUserByUsername } from "@use-cases/users/find-user-by-username";
 import { UserViewModel } from "@view-models/user-view-model";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { z } from "zod";
 
 export class UsersController {
   private createUser: CreateUser
   private findUserByUsername: FindUserByUsername
+  private authUser: AuthUser
 
   constructor(private usersRepository: UsersRepository) {
     this.createUser = new CreateUser(this.usersRepository)
     this.findUserByUsername = new FindUserByUsername(this.usersRepository)
+    this.authUser = new AuthUser(this.usersRepository)
   }
 
   async create(request: FastifyRequest, _reply: FastifyReply) {
@@ -46,7 +49,28 @@ export class UsersController {
     })
   }
 
-  async findByUsername(request: FastifyRequest, reply: FastifyReply) {
+  async auth(request: FastifyRequest, reply: FastifyReply) {
+    const authUserBodySchema = z.object({
+      username: z.string(),
+      password: z.string(),
+    })
+
+    const { username, password } = authUserBodySchema.parse(request.body)
+
+    const { id } = await this.authUser.execute({ username, password })
+
+    const token = request.jwt.sign({ id })
+
+    reply.setCookie('access_token', token, {
+      path: '/',
+      httpOnly: true,
+      secure: true,
+    })
+
+    return { token }
+  }
+
+  async findByUsername(request: FastifyRequest, _reply: FastifyReply) {
     const findUserByUsernameParamsSchema = z.object({
       username: z.string()
     })
@@ -56,8 +80,6 @@ export class UsersController {
     const user = await this.findUserByUsername.execute({
       username,
     })
-
-    if(!user) return reply.status(404).send();
 
     return UserViewModel.toHTTP(user)
   }

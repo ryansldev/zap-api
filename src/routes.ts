@@ -13,8 +13,11 @@ const usersRepository = new PrismaUsersRepository(prisma)
 const usersController = new UsersController(usersRepository)
 
 async function routes (app: FastifyInstance) {
-  app.post('/users', (request, reply) => usersController.create(request, reply))
-  app.get('/users/:username', (request, reply) => usersController.findByUsername(request, reply))
+  app.post('/signup', (request, reply) => usersController.create(request, reply))
+  app.post('/login', (request, reply) => usersController.auth(request, reply))
+  app.get('/users/:username', {
+    preHandler: [app.authenticate]
+  }, (request, reply) => usersController.findByUsername(request, reply))
 }
 
 export default routes

@@ -4,7 +4,7 @@ export class UserAuthError extends Error {
   statusCode: HttpStatusCode
   
   constructor() {
-    super('Email or password wrong, try again.')
+    super('Username or password wrong, try again.')
     this.statusCode = HttpStatusCode.UNAUTHORIZED
   }
 }

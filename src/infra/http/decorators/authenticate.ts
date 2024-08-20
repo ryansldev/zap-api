@@ -2,7 +2,7 @@ import { HttpStatusCode } from "@@types/enums/http-status-code";
 import { FastifyJWT } from "@fastify/jwt";
 import { FastifyReply, FastifyRequest } from "fastify";
 
-export function AuthenticateDecorator(request: FastifyRequest, reply: FastifyReply) {
+export async function AuthenticateDecorator(request: FastifyRequest, reply: FastifyReply) {
   const token = request.cookies.access_token
 
   if(!token) {
