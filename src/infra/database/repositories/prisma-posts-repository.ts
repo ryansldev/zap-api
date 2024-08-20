@@ -30,10 +30,27 @@ export class PrismaPostsRepository implements PostsRepository {
     return PrismaPostMapper.toDomain(post)
   }
 
-  async list(parentId?: string): Promise<Post[]> {
+  async list(): Promise<Post[]> {
     const posts = await this.prisma.post.findMany({
       where: {
-        parent_id: parentId,
+        parent_id: null,
+      },
+      orderBy: {
+        created_at: 'desc'
+      },
+      include: {
+        author: true,
+        liked_by: true,
+      }
+    })
+
+    return posts.map(PrismaPostMapper.toDomain)
+  }
+
+  async listParents(id: string): Promise<Post[]> {
+    const posts = await this.prisma.post.findMany({
+      where: {
+        parent_id: id,
       },
       orderBy: {
         created_at: 'desc'
