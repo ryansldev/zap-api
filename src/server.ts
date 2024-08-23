@@ -1,5 +1,7 @@
 import 'dotenv/config'
 import Fastify from 'fastify'
+import cors from '@fastify/cors'
+
 import routes from './routes'
 
 import jwt from '@fastify/jwt'
@@ -7,6 +9,11 @@ import fastifyCookie from '@fastify/cookie'
 import { AuthenticateDecorator } from '@decorators/authenticate'
 
 const app = Fastify()
+
+app.register(cors, {
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+})
 
 const secret = process.env.JWT_SECRET!
 

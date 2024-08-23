@@ -38,7 +38,7 @@ export class UsersController {
       profilePic,
     } = createUserBodySchema.parse(request.body)
     
-    await this.createUser.execute({
+    return await this.createUser.execute({
       name,
       lastname,
       email,

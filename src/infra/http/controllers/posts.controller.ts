@@ -37,7 +37,7 @@ export class PostsController {
 
     const { text, parentId } = createPostBodySchema.parse(request.body)
 
-    await this.createPost.execute({
+    return await this.createPost.execute({
       text,
       authorId,
       parentId,
