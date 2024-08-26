@@ -7,5 +7,6 @@ export interface PostsRepository {
   list(): Promise<Post[]>
   listParents(id: string): Promise<Post[]>
   like(post: Post, user: User): Promise<void>
+  dislike(post: Post, user: User): Promise<void>
   save(post: Post): Promise<void>
 }

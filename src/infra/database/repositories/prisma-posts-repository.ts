@@ -85,6 +85,27 @@ export class PrismaPostsRepository implements PostsRepository {
     })
   }
 
+  async dislike(post: Post, user: User): Promise<void> {
+    const data = await this.prisma.user.findFirst({
+      where: {
+        id: user.id,
+      },
+      select: {
+        liked: true,
+      }
+    })
+    await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        liked: {
+          set: data?.liked.filter((item) => item.id !== post.id)
+        }
+      }
+    })
+  }
+
   async save(post: Post): Promise<void> {
     await this.prisma.post.update({
       where: {

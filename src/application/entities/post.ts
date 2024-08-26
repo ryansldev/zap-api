@@ -66,6 +66,10 @@ export class Post {
     this.props.likedBy.push(user)
   }
 
+  dislike(userId: string) {
+    this.props.likedBy = this.props.likedBy.filter((user) => user.id !== userId)
+  }
+
   get authorId(): string {
     return this.props.authorId
   }

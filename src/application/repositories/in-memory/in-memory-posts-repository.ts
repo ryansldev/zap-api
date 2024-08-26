@@ -35,6 +35,14 @@ export class InMemoryPostsRepository implements PostsRepository {
     }
   }
 
+  async dislike(post: Post, user: User): Promise<void> {
+    const index = this.items.indexOf(post)
+    if (index !== -1) {
+      this.items[index].dislike(user.id)
+      user.removeLikedPost(post)
+    }
+  }
+
   async save(post: Post): Promise<void> {
     const index = this.items.indexOf(post)
     if (index !== -1) {

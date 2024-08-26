@@ -8,10 +8,12 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { PostViewModel } from "@view-models/post-view-model";
 import { ListPostParents } from "@use-cases/posts/list-post-parents";
 import { FindPostById } from "@use-cases/posts/find-post-by-id";
+import { DislikePost } from "@use-cases/posts/dislike-post";
 
 export class PostsController {
   private createPost: CreatePost
   private likePost: LikePost
+  private dislikePost: DislikePost
   private listPosts: ListPosts
   private listPostParents: ListPostParents
   private findPostById: FindPostById
@@ -22,6 +24,7 @@ export class PostsController {
   ) {
     this.createPost = new CreatePost(this.usersRepository, this.postsRepository)
     this.likePost = new LikePost(this.usersRepository, this.postsRepository)
+    this.dislikePost = new DislikePost(this.usersRepository, this.postsRepository)
     this.listPosts = new ListPosts(this.postsRepository)
     this.listPostParents = new ListPostParents(this.postsRepository)
     this.findPostById = new FindPostById(this.postsRepository)
@@ -83,5 +86,17 @@ export class PostsController {
     const { id: postId } = likePostParamsSchema.parse(request.params)
 
     await this.likePost.execute({ userId, postId })
+  }
+
+  async dislike(request: FastifyRequest, _reply: FastifyReply) {
+    const { id: userId } = request.user
+
+    const dislikePostParamsSchema = z.object({
+      id: z.string(),
+    })
+
+    const { id: postId } = dislikePostParamsSchema.parse(request.params)
+
+    await this.dislikePost.execute({ userId, postId })
   }
 }

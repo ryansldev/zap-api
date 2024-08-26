@@ -116,6 +116,13 @@ export class User {
     this.props.liked.push(post)
   }
 
+  removeLikedPost(post: Post) {
+    const index = this.props.liked.indexOf(post)
+    if (index !== -1) {
+      this.props.liked.splice(index, 1)
+    }
+  }
+
   get createdAt(): Date {
     return this.props.createdAt
   }
