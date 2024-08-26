@@ -65,13 +65,21 @@ export class PrismaPostsRepository implements PostsRepository {
   }
 
   async like(post: Post, user: User): Promise<void> {
+    const data = await this.prisma.user.findFirst({
+      where: {
+        id: user.id,
+      },
+      select: {
+        liked: true,
+      }
+    })
     await this.prisma.user.update({
       where: {
         id: user.id,
       },
       data: {
         liked: {
-          set: PrismaPostMapper.toPrisma(post)
+          set: !data ? PrismaPostMapper.toPrisma(post) : [...data.liked, PrismaPostMapper.toPrisma(post)]
         }
       }
     })

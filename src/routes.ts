@@ -30,7 +30,7 @@ async function routes (app: FastifyInstance) {
   app.post('/posts', {
     preHandler: [app.authenticate]
   }, (request, reply) => postsController.create(request, reply))
-  app.post('/posts/like/:id', {
+  app.post('/posts/:id/like', {
     preHandler: [app.authenticate]
   }, (request, reply) => postsController.like(request, reply))
   app.get('/posts', {

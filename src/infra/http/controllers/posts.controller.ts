@@ -58,7 +58,7 @@ export class PostsController {
 
   async list(_request: FastifyRequest, _reply: FastifyReply) {
     const posts = await this.listPosts.execute()
-    return posts.map(PostViewModel.toHTTP)
+    return posts.map(PostViewModel.toFullHTTP)
   }
 
   async listParents(request: FastifyRequest, _reply: FastifyReply) {
