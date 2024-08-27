@@ -27,6 +27,11 @@ export class InMemoryPostsRepository implements PostsRepository {
     })
   }
 
+  async countParents(id: string): Promise<number> {
+    const parents = this.items.filter((post) => post.parentId === id)
+    return parents.length
+  }
+
   async like(post: Post, user: User): Promise<void> {
     const index = this.items.indexOf(post)
     if (index !== -1) {

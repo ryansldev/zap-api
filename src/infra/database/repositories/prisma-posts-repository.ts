@@ -30,7 +30,7 @@ export class PrismaPostsRepository implements PostsRepository {
     return PrismaPostMapper.toDomain(post)
   }
 
-  async list(): Promise<Post[]> {
+  async list(page: number, limit: number): Promise<Post[]> {
     const posts = await this.prisma.post.findMany({
       where: {
         parent_id: null,
@@ -41,7 +41,9 @@ export class PrismaPostsRepository implements PostsRepository {
       include: {
         author: true,
         liked_by: true,
-      }
+      },
+      skip: (page-1)*limit,
+      take: limit,
     })
 
     return posts.map(PrismaPostMapper.toDomain)
