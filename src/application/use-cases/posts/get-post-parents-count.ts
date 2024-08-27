@@ -1,15 +1,15 @@
 import { PostsRepository } from "@repositories/posts-repository";
 
-interface GetParentsCountProps {
+interface GetPostParentsCountProps {
   id: string;
 }
 
-export class GetParentsCount {
+export class GetPostParentsCount {
   constructor(
     private postsRepository: PostsRepository,
   ) {}
 
-  async execute({ id }: GetParentsCountProps) {
+  async execute({ id }: GetPostParentsCountProps) {
     return await this.postsRepository.countParents(id)
   }
 }

@@ -9,6 +9,7 @@ import { PostViewModel } from "@view-models/post-view-model";
 import { ListPostParents } from "@use-cases/posts/list-post-parents";
 import { FindPostById } from "@use-cases/posts/find-post-by-id";
 import { DislikePost } from "@use-cases/posts/dislike-post";
+import { GetPostParentsCount } from "@use-cases/posts/get-post-parents-count";
 
 export class PostsController {
   private createPost: CreatePost
@@ -16,6 +17,7 @@ export class PostsController {
   private dislikePost: DislikePost
   private listPosts: ListPosts
   private listPostParents: ListPostParents
+  private countPostParents: GetPostParentsCount
   private findPostById: FindPostById
 
   constructor(
@@ -28,6 +30,7 @@ export class PostsController {
     this.listPosts = new ListPosts(this.postsRepository)
     this.listPostParents = new ListPostParents(this.postsRepository)
     this.findPostById = new FindPostById(this.postsRepository)
+    this.countPostParents = new GetPostParentsCount(this.postsRepository)
   }
 
   async create(request: FastifyRequest, _reply: FastifyReply) {
@@ -60,7 +63,7 @@ export class PostsController {
   }
 
   async list(_request: FastifyRequest, _reply: FastifyReply) {
-    const posts = await this.listPosts.execute()
+    const posts = await this.listPosts.execute({})
     return posts.map(PostViewModel.toFullHTTP)
   }
 
@@ -74,6 +77,18 @@ export class PostsController {
     const posts = await this.listPostParents.execute({ id })
 
     return posts.map(PostViewModel.toHTTP)
+  }
+
+  async countParents(request: FastifyRequest, _reply: FastifyReply) {
+    const countParentsParamsSchema = z.object({
+      id: z.string().uuid(),
+    })
+
+    const { id } = countParentsParamsSchema.parse(request.params)
+
+    const count = await this.countPostParents.execute({ id })
+
+    return { count }
   }
 
   async like(request: FastifyRequest, _reply: FastifyReply) {

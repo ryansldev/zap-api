@@ -66,6 +66,14 @@ export class PrismaPostsRepository implements PostsRepository {
     return posts.map(PrismaPostMapper.toDomain)
   }
 
+  async countParents(id: string): Promise<number> {
+    return this.prisma.post.count({
+      where: {
+        parent_id: id,
+      }
+    })
+  }
+
   async like(post: Post, user: User): Promise<void> {
     const data = await this.prisma.user.findFirst({
       where: {

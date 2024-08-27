@@ -3,7 +3,7 @@ import { InMemoryUsersRepository } from "@repositories/in-memory/in-memory-users
 import { CreateUser } from "@use-cases/users/create-user";
 import { describe, expect, it } from "vitest";
 import { CreatePost } from "./create-post";
-import { GetParentsCount } from "./get-parents-count";
+import { GetPostParentsCount } from "./get-post-parents-count";
 
 describe('Get parents count', () => {
   it('should be able to get parents count', async () => {
@@ -12,7 +12,7 @@ describe('Get parents count', () => {
 
     const createUser = new CreateUser(usersRepository)
     const createPost = new CreatePost(usersRepository, postsRepository)
-    const sut = new GetParentsCount(postsRepository)
+    const sut = new GetPostParentsCount(postsRepository)
 
     const user = await createUser.execute({
       name: 'John',
