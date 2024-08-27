@@ -76,7 +76,7 @@ export class PostsController {
 
     const posts = await this.listPostParents.execute({ id })
 
-    return posts.map(PostViewModel.toHTTP)
+    return posts.map(PostViewModel.toFullHTTP)
   }
 
   async countParents(request: FastifyRequest, _reply: FastifyReply) {
