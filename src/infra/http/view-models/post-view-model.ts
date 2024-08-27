@@ -17,7 +17,7 @@ interface FullPostHTTP {
   parentId?: string;
   authorId: string;
   author: UserHTTP;
-  likedBy: UserHTTP[];
+  likes: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -42,7 +42,7 @@ export class PostViewModel {
       parentId: post.parentId,
       authorId: post.authorId,
       author: UserViewModel.toHTTP(post.author),
-      likedBy: post.likedBy.map(UserViewModel.toHTTP),
+      likes: post.likedBy.length,
       createdAt: post.createdAt,
       updatedAt: post.updatedAt,
     }
