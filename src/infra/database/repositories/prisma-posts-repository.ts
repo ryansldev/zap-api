@@ -37,9 +37,6 @@ export class PrismaPostsRepository implements PostsRepository {
       },
       orderBy: {
         created_at: 'desc',
-        liked_by: {
-          _count: 'desc'
-        },
       },
       include: {
         author: true,
@@ -59,9 +56,6 @@ export class PrismaPostsRepository implements PostsRepository {
       },
       orderBy: {
         created_at: 'desc',
-        liked_by: {
-          _count: 'desc'
-        },
       },
       include: {
         author: true,
