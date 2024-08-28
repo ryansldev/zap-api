@@ -79,9 +79,16 @@ export class PostsController {
       id: z.string().uuid(),
     })
 
+    const listPostsParentsQuerySchema = z.object({
+      limit: z.coerce.number().optional(),
+      page: z.coerce.number().optional(),
+    })
+
+    const { limit, page } = listPostsParentsQuerySchema.parse(request.query)
+
     const { id } = listParentsParamsSchema.parse(request.params)
 
-    const posts = await this.listPostParents.execute({ id })
+    const posts = await this.listPostParents.execute({ id, limit, page })
 
     return posts.map(PostViewModel.toFullHTTP)
   }

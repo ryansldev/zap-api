@@ -36,7 +36,10 @@ export class PrismaPostsRepository implements PostsRepository {
         parent_id: null,
       },
       orderBy: {
-        created_at: 'desc'
+        created_at: 'desc',
+        liked_by: {
+          _count: 'desc'
+        },
       },
       include: {
         author: true,
@@ -49,18 +52,23 @@ export class PrismaPostsRepository implements PostsRepository {
     return posts.map(PrismaPostMapper.toDomain)
   }
 
-  async listParents(id: string): Promise<Post[]> {
+  async listParents(id: string, page: number, limit: number): Promise<Post[]> {
     const posts = await this.prisma.post.findMany({
       where: {
         parent_id: id,
       },
       orderBy: {
-        created_at: 'desc'
+        created_at: 'desc',
+        liked_by: {
+          _count: 'desc'
+        },
       },
       include: {
         author: true,
         liked_by: true,
-      }
+      },
+      skip: (page-1)*limit,
+      take: limit,
     })
 
     return posts.map(PrismaPostMapper.toDomain)
