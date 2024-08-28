@@ -62,8 +62,15 @@ export class PostsController {
     return PostViewModel.toFullHTTP(post)
   }
 
-  async list(_request: FastifyRequest, _reply: FastifyReply) {
-    const posts = await this.listPosts.execute({})
+  async list(request: FastifyRequest, _reply: FastifyReply) {
+    const listPostsQuerySchema = z.object({
+      limit: z.coerce.number().optional(),
+      page: z.coerce.number().optional(),
+    })
+
+    const { limit, page } = listPostsQuerySchema.parse(request.query)
+
+    const posts = await this.listPosts.execute({ limit, page })
     return posts.map(PostViewModel.toFullHTTP)
   }
 
