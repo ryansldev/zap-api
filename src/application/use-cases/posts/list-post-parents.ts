@@ -11,7 +11,7 @@ export class ListPostParents {
     private postsRepository: PostsRepository
   ) {}
 
-  async execute({ id, page, limit }: ListPostParentsRequest) {
+  async execute({ id, page = 1, limit = 25 }: ListPostParentsRequest) {
     return await this.postsRepository.listParents(id, page, limit)
   }
 }
