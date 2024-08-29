@@ -30,10 +30,11 @@ export class PrismaPostsRepository implements PostsRepository {
     return PrismaPostMapper.toDomain(post)
   }
 
-  async list(page: number, limit: number): Promise<Post[]> {
+  async list(page: number, limit: number, authorId?: string): Promise<Post[]> {
     const posts = await this.prisma.post.findMany({
       where: {
         parent_id: null,
+        author_id: authorId,
       },
       orderBy: {
         created_at: 'desc',
