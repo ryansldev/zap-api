@@ -39,7 +39,7 @@ app.decorate(
 app.register(routes)
 
 const port = Number(process.env.PORT)
-app.listen({ port }, (err, address) => {
+app.listen({ port, host: '0.0.0.0' }, (err, address) => {
   if(err) {
     app.log.error(err)
     process.exit(1)
