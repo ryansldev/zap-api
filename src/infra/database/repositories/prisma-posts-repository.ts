@@ -127,4 +127,12 @@ export class PrismaPostsRepository implements PostsRepository {
       data: PrismaPostMapper.toPrisma(post)
     })    
   }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.post.delete({
+      where: {
+        id,
+      }
+    })
+  }
 }

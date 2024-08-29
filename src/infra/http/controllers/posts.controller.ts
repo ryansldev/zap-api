@@ -10,6 +10,7 @@ import { ListPostParents } from "@use-cases/posts/list-post-parents";
 import { FindPostById } from "@use-cases/posts/find-post-by-id";
 import { DislikePost } from "@use-cases/posts/dislike-post";
 import { GetPostParentsCount } from "@use-cases/posts/get-post-parents-count";
+import { DeletePost } from "@use-cases/posts/delete-post";
 
 export class PostsController {
   private createPost: CreatePost
@@ -19,6 +20,7 @@ export class PostsController {
   private listPostParents: ListPostParents
   private countPostParents: GetPostParentsCount
   private findPostById: FindPostById
+  private deletePost: DeletePost
 
   constructor(
     private usersRepository: UsersRepository,
@@ -31,6 +33,7 @@ export class PostsController {
     this.listPostParents = new ListPostParents(this.postsRepository)
     this.findPostById = new FindPostById(this.postsRepository)
     this.countPostParents = new GetPostParentsCount(this.postsRepository)
+    this.deletePost = new DeletePost(this.postsRepository)
   }
 
   async create(request: FastifyRequest, _reply: FastifyReply) {
@@ -128,5 +131,16 @@ export class PostsController {
     const { id: postId } = dislikePostParamsSchema.parse(request.params)
 
     await this.dislikePost.execute({ userId, postId })
+  }
+
+  async delete(request: FastifyRequest, _reply: FastifyReply) {
+    const { id: authorId } = request.user
+    const deletePostParamsSchema = z.object({
+      id: z.string().uuid(),
+    })
+
+    const { id } = deletePostParamsSchema.parse(request.params)
+
+    return await this.deletePost.execute({ id, authorId })
   }
 }

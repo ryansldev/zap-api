@@ -16,7 +16,7 @@ export class DeletePost {
     const post = await this.postsRepository.findById(id)
     if(!post) throw new PostNotFound();
 
-    if(post.authorId !== authorId) throw new UserNotAuthorized()
+    if(post.authorId !== authorId) throw new UserNotAuthorized();
 
     await this.postsRepository.delete(id)
 
