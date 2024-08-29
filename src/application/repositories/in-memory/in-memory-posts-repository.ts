@@ -54,4 +54,8 @@ export class InMemoryPostsRepository implements PostsRepository {
       this.items[index] = post
     }
   }
+
+  async delete(id: string): Promise<void> {
+    this.items = this.items.filter((post) => post.id !== id)
+  }
 }

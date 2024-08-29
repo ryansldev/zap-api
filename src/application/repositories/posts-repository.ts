@@ -10,4 +10,5 @@ export interface PostsRepository {
   countParents(id: string): Promise<number>
   dislike(post: Post, user: User): Promise<void>
   save(post: Post): Promise<void>
+  delete(id: string): Promise<void>
 }
